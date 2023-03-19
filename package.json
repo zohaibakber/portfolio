@@ -1,0 +1,22 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zohaibakber/portfolio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zohaibakber/portfolio/issues"
+  },
+  "homepage": "https://github.com/zohaibakber/portfolio#readme",
+  "dependencies": {
+    "@fontsource/poppins": "^4.5.10"
+  }
+}
