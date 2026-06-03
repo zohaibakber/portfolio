@@ -1,3 +1,4 @@
+import { LahoreDateTime } from "@/components/lahore-datetime";
 import { nav, portfolio, spec47 } from "@/lib/portfolio";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
@@ -52,7 +53,7 @@ function ProjectDescription({ text }: { text: string }) {
 }
 
 export default function Home() {
-  const { name, title, location, email, website } = portfolio;
+  const { name, title, location, email } = portfolio;
   const currentYear = new Date().getFullYear();
 
   return (
@@ -81,8 +82,7 @@ export default function Home() {
           </h1>
           <p className="mt-1 text-muted">{title}</p>
           <p className="mt-0.5 text-muted">{location}</p>
-
-          <p className="mt-8">
+          <p className="mt-0.5">
             <a
               href={`mailto:${email}`}
               className="text-muted transition-colors hover:text-foreground"
@@ -99,7 +99,7 @@ export default function Home() {
             {portfolio.skills.map((skill) => (
               <li
                 key={skill}
-                className="font-mono text-[0.625rem] text-muted"
+                className="text-[0.625rem] text-muted"
               >
                 {skill}
               </li>
@@ -116,7 +116,7 @@ export default function Home() {
                   <h2 className="text-[0.875rem] font-normal text-foreground">
                     <ExternalLink href={project.url}>{project.name}</ExternalLink>
                   </h2>
-                  <span className="font-mono text-[0.625rem] text-muted">
+                  <span className="text-[0.625rem] text-muted">
                     {project.role}
                   </span>
                 </div>
@@ -143,11 +143,11 @@ export default function Home() {
               className="text-foreground underline decoration-border underline-offset-[3px] hover:decoration-foreground"
             >
               email
-            </a>{" "}
-            or visit{" "}
-            <ExternalLink href={`https://${website}`}>{website}</ExternalLink>.
+            </a>
+            .
           </p>
-          <p className="mt-16 font-mono text-[0.625rem] text-muted">
+          <LahoreDateTime />
+          <p className="mt-4 text-[0.625rem] text-muted">
             © {currentYear} {name}
           </p>
         </footer>
