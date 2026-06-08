@@ -104,7 +104,7 @@ export default function Home() {
               href={`mailto:${email}`}
               className="text-foreground underline decoration-border underline-offset-[3px] hover:decoration-foreground"
             >
-              email
+              {email}
             </a>
             .
           </p>
