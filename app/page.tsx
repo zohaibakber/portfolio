@@ -1,13 +1,5 @@
 import { LahoreDateTime } from "@/components/lahore-datetime";
-import { nav, portfolio, spec47 } from "@/lib/portfolio";
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-6 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-muted">
-      {children}
-    </p>
-  );
-}
+import { portfolio, spec47 } from "@/lib/portfolio";
 
 function ExternalLink({
   href,
@@ -57,25 +49,8 @@ export default function Home() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-[42rem] flex-col px-6 py-16 sm:px-8 sm:py-20 lg:max-w-[52rem] lg:flex-row lg:gap-20 lg:py-24">
-      <aside className="mb-14 lg:sticky lg:top-24 lg:mb-0 lg:w-28 lg:shrink-0 lg:self-start">
-        <nav aria-label="Page sections">
-          <ul className="flex flex-wrap gap-x-5 gap-y-2 lg:flex-col lg:gap-3">
-            {nav.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  className="font-mono text-[0.625rem] uppercase tracking-[0.15em] text-muted transition-colors hover:text-foreground"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
-
-      <main className="min-w-0 flex-1">
+    <div className="mx-auto min-h-screen max-w-[42rem] px-6 py-16 sm:px-8 sm:py-20 lg:py-24">
+      <main>
         <header id="about" className="scroll-mt-24 border-b border-border pb-14">
           <h1 className="text-[1.125rem] font-normal tracking-tight text-foreground">
             {name}
@@ -94,21 +69,9 @@ export default function Home() {
           <p className="mt-10 max-w-prose text-foreground/90">
             {portfolio.summary}
           </p>
-
-          <ul className="mt-10 flex flex-wrap gap-x-3 gap-y-2">
-            {portfolio.skills.map((skill) => (
-              <li
-                key={skill}
-                className="text-[0.625rem] text-muted"
-              >
-                {skill}
-              </li>
-            ))}
-          </ul>
         </header>
 
         <section id="work" className="scroll-mt-24 border-b border-border py-14">
-          <SectionLabel>Selected work</SectionLabel>
           <ul className="space-y-12">
             {portfolio.projects.map((project) => (
               <li key={project.name}>
@@ -134,7 +97,6 @@ export default function Home() {
         </section>
 
         <footer id="contact" className="scroll-mt-24 pt-14">
-          <SectionLabel>Contact</SectionLabel>
           <p className="max-w-prose text-muted">
             Open to collaborations on web products, e-commerce, and design-led
             builds. Reach out via{" "}

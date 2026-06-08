@@ -12,27 +12,6 @@ export const portfolio = {
   website: "zohaibakber.com",
   summary:
     "Full-stack web developer with experience designing and developing responsive, production-ready web projects. Skilled in JavaScript, TypeScript, SQL, PostgreSQL, Git, Python, and C++. Experienced in building e-commerce platforms, CMS-driven websites, and collaborating with design teams.",
-  skills: [
-    "JavaScript",
-    "TypeScript",
-    "SQL",
-    "Python",
-    "C++",
-    "Next.js",
-    "React",
-    "Node.js",
-    "PostgreSQL",
-    "DynamoDB",
-    "Redis",
-    "Git",
-    "GitHub",
-    "Shopify",
-    "Sanity CMS",
-    "Responsive Design",
-    "REST APIs",
-    "Frontend Development",
-    "Backend Development",
-  ],
   projects: [
     {
       name: "Krakvik Dorazio",
@@ -58,19 +37,5 @@ export const portfolio = {
       description:
         "Developed the website based on designs provided by Danish design firm SPEC47. Built a modern fashion e-commerce experience focused on visual presentation, performance, responsive design, and design accuracy.",
     },
-    {
-      name: "HC Hub",
-      url: "https://hchub.pro",
-      role: "Full-Stack Developer",
-      stack: "Next.js, Sanity CMS",
-      description:
-        "Developed a content-driven web platform using Sanity CMS. Implemented CMS-powered pages for easy content management and structured content updates. Focused on performance, scalability, and smooth content editing workflows.",
-    },
   ],
 } as const;
-
-export const nav = [
-  { id: "about", label: "About" },
-  { id: "work", label: "Work" },
-  { id: "contact", label: "Contact" },
-] as const;

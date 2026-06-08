@@ -31,12 +31,9 @@ function getLahoreTimeParts(date: Date): LahoreTimeParts {
 function PulsingDot() {
   return (
     <span
-      className="relative mx-1 inline-flex h-1 w-1 shrink-0 align-middle"
+      className="mx-1 inline-block h-1 w-1 shrink-0 animate-pulse rounded-full bg-foreground align-middle"
       aria-hidden
-    >
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-foreground/40" />
-      <span className="relative inline-flex h-1 w-1 rounded-full bg-foreground" />
-    </span>
+    />
   );
 }
 
