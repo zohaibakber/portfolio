@@ -97,7 +97,7 @@ export function WorkList({ projects }: { projects: readonly Project[] }) {
               <span className="relative aspect-[16/10] overflow-hidden md:hidden">
                 <Image src={project.image} alt="" fill sizes="100vw" className="object-cover" />
               </span>
-              <span className="block overflow-y-clip md:col-span-9">
+              <span className="reveal-mask block overflow-y-clip md:col-span-9">
                 <motion.span
                   data-spec="Project"
                   // Plain text inside, so text-indent is safe here: ink of the first letter on the grid line.

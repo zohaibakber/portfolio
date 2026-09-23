@@ -1,18 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { isReservedKeypress } from "@/lib/keys";
-
-type Spec = {
-  id: number;
-  label: string;
-  font: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
 
 const COLUMNS = 12;
 /** Window event that toggles blueprint mode, fired by the header button. */
@@ -27,14 +17,16 @@ function describe(el: HTMLElement) {
 }
 
 /**
- * Press G: the page shows its working. Column grid, baseline, and live type specs for every
- * element marked `data-spec`, the way a designer hands it over and a developer builds it.
+ * Press G: the page shows its working. Column grid, baseline, and type specs for every element
+ * marked `data-spec`, the way a designer hands it over and a developer builds it.
+ *
+ * Outlines and labels are drawn by CSS on the elements themselves (see globals.css), fed through
+ * data attributes. An overlay that re-measured elements every frame always trailed the scroll by a
+ * frame (Lenis on desktop, compositor scrolling on mobile), so the boxes wobbled; these can't.
  */
 export function Blueprint() {
   const [open, setOpen] = useState(false);
-  const [specs, setSpecs] = useState<Spec[]>([]);
   const [viewport, setViewport] = useState("");
-  const frame = useRef(0);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -53,46 +45,36 @@ export function Blueprint() {
 
   useEffect(() => {
     const root = document.documentElement;
-    if (!open) {
-      delete root.dataset.blueprint;
-      return;
-    }
+    if (!open) return;
     root.dataset.blueprint = "";
 
     const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-spec]"));
-    const fonts = targets.map(describe);
-    let previous = "";
+    // Labels are absolutely positioned pseudo-elements, so their element must be positioned.
+    const madeRelative = targets.filter((el) => getComputedStyle(el).position === "static");
+    madeRelative.forEach((el) => (el.style.position = "relative"));
+    targets.forEach(
+      (el) => (el.dataset.specFont = `${el.dataset.spec}: Mona Sans ${describe(el)}`),
+    );
 
-    // Specs follow their elements while the page scrolls; only re-render when something moved.
-    const track = () => {
-      const next: Spec[] = [];
-      targets.forEach((el, id) => {
-        const rect = el.getBoundingClientRect();
-        if (rect.bottom < 0 || rect.top > window.innerHeight || rect.width === 0) return;
-        next.push({
-          id,
-          label: el.dataset.spec ?? "",
-          font: fonts[id],
-          x: rect.left,
-          y: rect.top,
-          width: rect.width,
-          height: rect.height,
-        });
+    const measure = () => {
+      targets.forEach((el) => {
+        el.dataset.specSize = `${Math.round(el.offsetWidth)} × ${Math.round(el.offsetHeight)}`;
       });
-      const key = next
-        .map((s) => `${s.id}:${Math.round(s.x)}:${Math.round(s.y)}:${Math.round(s.width)}`)
-        .join("|");
-      if (key !== previous) {
-        previous = key;
-        setSpecs(next);
-        setViewport(`${window.innerWidth} × ${window.innerHeight}`);
-      }
-      frame.current = requestAnimationFrame(track);
+      setViewport(`${window.innerWidth} × ${window.innerHeight}`);
     };
-    frame.current = requestAnimationFrame(track);
+    measure();
+    const observer = new ResizeObserver(measure);
+    targets.forEach((el) => observer.observe(el));
+    window.addEventListener("resize", measure);
 
     return () => {
-      cancelAnimationFrame(frame.current);
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+      madeRelative.forEach((el) => (el.style.position = ""));
+      targets.forEach((el) => {
+        delete el.dataset.specFont;
+        delete el.dataset.specSize;
+      });
       delete root.dataset.blueprint;
     };
   }, [open]);
@@ -107,13 +89,8 @@ export function Blueprint() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          {/* 8px baseline grid */}
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-[repeating-linear-gradient(to_bottom,transparent_0_7px,color-mix(in_srgb,var(--ink)_9%,transparent)_7px_8px)]"
-          />
-
-          {/* Column grid, dropping in one column at a time */}
+          {/* Column grid, dropping in one column at a time. Fixed is right here: it is vertical-only,
+              so scrolling never moves it relative to the content. */}
           <div
             aria-hidden
             className="absolute inset-0 grid grid-cols-4 gap-4 px-5 md:grid-cols-12 md:gap-6 md:px-8"
@@ -128,23 +105,6 @@ export function Blueprint() {
               />
             ))}
           </div>
-
-          {/* Live type specs */}
-          {specs.map((spec) => (
-            <div
-              aria-hidden
-              key={spec.id}
-              className="absolute border border-dashed border-ink"
-              style={{ left: spec.x, top: spec.y, width: spec.width, height: spec.height }}
-            >
-              <span className="absolute -top-px left-0 -translate-y-full bg-ink px-2 py-1 text-[11px] leading-none whitespace-nowrap text-paper">
-                {spec.label}: Mona Sans {spec.font}
-              </span>
-              <span className="absolute right-0 -bottom-px translate-y-full bg-ink px-2 py-1 text-[11px] leading-none whitespace-nowrap text-paper">
-                {Math.round(spec.width)} × {Math.round(spec.height)}
-              </span>
-            </div>
-          ))}
 
           {/* Top centre: the one strip of the viewport no spec label ever lands on. */}
           {/* The overlay ignores the pointer so the page stays usable; only this panel takes clicks. */}

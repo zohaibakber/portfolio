@@ -208,10 +208,60 @@ kbd {
   animation: splash-fall 1s cubic-bezier(0.55, 0, 0.8, 0.45) 1.75s forwards;
 }
 
-/* Blueprint mode (press G): sections show their bounds. */
+/* Blueprint mode (press G). Everything here is attached to the page itself, so it scrolls with
+   the content instead of being re-positioned by script. */
 [data-blueprint] main section {
   outline: 1px dashed color-mix(in srgb, var(--ink) 40%, transparent);
   outline-offset: -1px;
+}
+
+/* 8px baseline grid, painted on the page so the lines travel with the text. */
+[data-blueprint] main,
+[data-blueprint] footer {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 7px,
+    color-mix(in srgb, currentColor 9%, transparent) 7px 8px
+  );
+}
+
+/* Type specs: dashed box on the element, font label above it, measured size below. */
+[data-blueprint] [data-spec] {
+  outline: 1px dashed var(--ink);
+  outline-offset: -1px;
+}
+
+[data-blueprint] [data-spec]::before,
+[data-blueprint] [data-spec]::after {
+  position: absolute;
+  z-index: 1;
+  padding: 4px 8px;
+  background: var(--ink);
+  color: var(--paper);
+  /* Reset everything the spec'd element would otherwise pass down to its own labels. */
+  font: 400 11px/1 var(--font-sans);
+  font-variation-settings: normal;
+  letter-spacing: 0;
+  text-indent: 0;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+[data-blueprint] [data-spec]::before {
+  content: attr(data-spec-font);
+  bottom: 100%;
+  left: 0;
+}
+
+[data-blueprint] [data-spec]::after {
+  content: attr(data-spec-size);
+  top: 100%;
+  right: 0;
+}
+
+/* The reveal masks around project titles would clip their labels; the reveal is long done. */
+[data-blueprint] .reveal-mask {
+  overflow: visible;
 }
 
 .letter-rise {
