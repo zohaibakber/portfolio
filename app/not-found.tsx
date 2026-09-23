@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { RollText } from "@/components/roll-text";
 
 export const metadata: Metadata = {
   title: "Not found",
@@ -8,22 +9,14 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="mx-auto flex min-h-screen max-w-[42rem] flex-col justify-center px-6 py-16 sm:px-8">
-      <p className="text-[0.625rem] uppercase tracking-[0.2em] text-muted">
-        404
-      </p>
-      <h1 className="mt-4 text-[1.125rem] font-normal tracking-tight">
-        Page not found
-      </h1>
-      <p className="mt-3 max-w-prose text-muted">
-        The page you are looking for does not exist or has been moved.
-      </p>
-      <Link
-        href="/"
-        className="mt-8 w-fit font-mono text-[0.625rem] uppercase tracking-[0.15em] text-muted transition-colors hover:text-foreground"
-      >
-        Back home
-      </Link>
-    </div>
+    <main className="flex min-h-[100dvh] flex-col justify-end px-5 pb-6 md:px-8 md:pb-8">
+      <h1 className="display text-[clamp(8rem,40vw,36rem)]">404</h1>
+      <div className="mt-6 flex flex-col gap-4 md:flex-row md:items-baseline md:justify-between">
+        <p className="text-muted">This page does not exist or has moved.</p>
+        <Link href="/" className="group w-fit">
+          <RollText text="Back to the homepage" />
+        </Link>
+      </div>
+    </main>
   );
 }

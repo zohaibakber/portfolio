@@ -1,119 +1,94 @@
+import { EasterEggs } from "@/components/easter-eggs";
+import { Hero } from "@/components/hero";
 import { LahoreDateTime } from "@/components/lahore-datetime";
-import { portfolio, spec47 } from "@/lib/portfolio";
-
-function ExternalLink({
-  href,
-  children,
-  className = "text-foreground",
-}: {
-  href: string;
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`${className} underline decoration-border underline-offset-[3px] transition-colors hover:decoration-foreground`}
-    >
-      {children}
-    </a>
-  );
-}
-
-function ProjectDescription({ text }: { text: string }) {
-  const parts = text.split(spec47.name);
-  if (parts.length === 1) {
-    return <>{text}</>;
-  }
-
-  return (
-    <>
-      {parts.map((part, index) => (
-        <span key={index}>
-          {part}
-          {index < parts.length - 1 ? (
-            <ExternalLink href={spec47.url} className="text-muted">
-              {spec47.name}
-            </ExternalLink>
-          ) : null}
-        </span>
-      ))}
-    </>
-  );
-}
+import { Splash } from "@/components/splash";
+import { Statement } from "@/components/statement";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { WorkList } from "@/components/work-list";
+import { opticalMargin } from "@/lib/optical";
+import { portfolio } from "@/lib/portfolio";
 
 export default function Home() {
-  const { name, title, location, email } = portfolio;
+  const { name, email, intro, statement, projects } = portfolio;
+  const [first, last] = name.split(" ");
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="mx-auto min-h-screen max-w-[42rem] px-6 py-16 sm:px-8 sm:py-20 lg:py-24">
-      <main>
-        <header id="about" className="scroll-mt-24 border-b border-border pb-14">
-          <h1 className="text-[1.125rem] font-normal tracking-tight text-foreground">
-            {name}
-          </h1>
-          <p className="mt-1 text-muted">{title}</p>
-          <p className="mt-0.5 text-muted">{location}</p>
-          <p className="mt-0.5">
-            <a
-              href={`mailto:${email}`}
-              className="text-muted transition-colors hover:text-foreground"
-            >
-              {email}
-            </a>
-          </p>
+    <>
+      <Splash text={name} />
+      <EasterEggs email={email} />
 
-          <p className="mt-10 max-w-prose text-foreground/90">
-            {portfolio.summary}
-          </p>
-        </header>
+      <main className="relative z-10 bg-paper">
+        <Hero first={first} last={last} intro={intro} />
 
-        <section id="work" className="scroll-mt-24 border-b border-border py-14">
-          <ul className="space-y-12">
-            {portfolio.projects.map((project) => (
-              <li key={project.name}>
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <h2 className="text-[0.875rem] font-normal text-foreground">
-                    <ExternalLink href={project.url}>{project.name}</ExternalLink>
-                  </h2>
-                  <span className="text-[0.625rem] text-muted">
-                    {project.role}
-                  </span>
-                </div>
-                {project.stack ? (
-                  <p className="mt-1 font-mono text-[0.625rem] text-muted">
-                    {project.stack}
-                  </p>
-                ) : null}
-                <p className="mt-3 max-w-prose text-muted">
-                  <ProjectDescription text={project.description} />
-                </p>
-              </li>
-            ))}
-          </ul>
+        <section id="work" aria-labelledby="work-title" className="px-5 pt-24 md:px-8 md:pt-40">
+          <h2 id="work-title" data-spec="Section title" className="mb-8 text-muted md:mb-12">
+            Selected work
+          </h2>
+          <WorkList projects={projects} />
         </section>
 
-        <footer id="contact" className="scroll-mt-24 pt-14">
-          <p className="max-w-prose text-muted">
-            Open to collaborations on web products, e-commerce, and design-led
-            builds. Reach out via{" "}
-            <a
-              href={`mailto:${email}`}
-              className="text-foreground underline decoration-border underline-offset-[3px] hover:decoration-foreground"
-            >
-              {email}
-            </a>
-            .
-          </p>
-          <LahoreDateTime />
-          <p className="mt-4 text-[0.625rem] text-muted">
-            © {currentYear} {name}
-          </p>
-        </footer>
+        <section aria-label="Approach" className="px-5 py-32 md:px-8 md:py-56">
+          {/* Columns 4-12 of the page grid, the same grid blueprint mode draws. */}
+          <div className="md:grid md:grid-cols-12 md:gap-x-6">
+            <div className="md:col-span-9 md:col-start-4">
+              <Statement text={statement} />
+            </div>
+          </div>
+        </section>
+        <div id="main-end" aria-hidden />
       </main>
-    </div>
+
+      <footer
+        id="contact"
+        className="accent-block sticky bottom-0 z-0 flex min-h-[60dvh] flex-col justify-between bg-accent px-5 pt-24 pb-6 text-on-accent md:min-h-[75dvh] md:px-8 md:pb-8"
+      >
+        <div>
+          <p className="mb-4 opacity-80 md:mb-6">Have a project in mind?</p>
+          <a
+            href={`mailto:${email}`}
+            // Dragging should select the address to copy it, not drag the link away.
+            draggable={false}
+            className="group display block text-[12vw] select-text md:text-[min(11rem,calc((100vw-4rem)/11.5))] md:whitespace-nowrap"
+          >
+            <span className="sr-only">{email}</span>
+            <span aria-hidden>
+              {Array.from(email).map((char, i) => (
+                <span
+                  key={i}
+                  className="swell inline-block"
+                  style={{
+                    transitionDelay: `${i * 22}ms`,
+                    // First letter's ink on the first grid line, not its side bearing.
+                    ...(i === 0 ? opticalMargin(char) : {}),
+                  }}
+                >
+                  {char}
+                </span>
+              ))}
+            </span>
+          </a>
+        </div>
+        <div className="flex flex-col gap-1 text-sm opacity-80 md:flex-row md:justify-between">
+          <LahoreDateTime />
+          <p className="flex gap-6">
+            <ThemeToggle />
+            <span>
+              ©{" "}
+              {/* Rendered at build time, corrected to the visitor's current year before first paint. */}
+              <span id="copyright-year" suppressHydrationWarning>
+                {currentYear}
+              </span>
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `document.getElementById("copyright-year").textContent=new Date().getFullYear()`,
+                }}
+              />{" "}
+              {name}
+            </span>
+          </p>
+        </div>
+      </footer>
+    </>
   );
 }

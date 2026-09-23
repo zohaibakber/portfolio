@@ -1,37 +1,282 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+/* Two themes. Dark: near-black paper, saddle-orange type. Light: ivory paper, black type.
+   Orange stays constant as the brand block (splash, footer). Hovering the work flips to the other theme. */
+@property --paper {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #070605;
+}
+
+@property --ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f26a1b;
+}
+
+@property --line {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #2e1609;
+}
 
 :root {
-  --background: #fafaf9;
-  --foreground: #1c1c1c;
-  --muted: #737373;
-  --border: #e5e5e4;
-  --accent: #404040;
+  --accent: #f26a1b;
+  --on-accent: #120d0a;
+  --muted: var(--ink);
+  --intro-delay: 1.9s;
+  transition:
+    --paper 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    --ink 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    --line 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root,
+:root[data-theme="dark"],
+:root[data-theme="light"][data-invert] {
+  --paper: #070605;
+  --ink: #f26a1b;
+  --line: #2e1609;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.05;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"],
+:root[data-theme="dark"][data-invert] {
+  --paper: #f4efe6;
+  --ink: #120d0a;
+  --line: #d6cdbd;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: 0.07;
+  color-scheme: light;
+}
+
+/* The circular theme reveal is a view transition; the colour crossfade would fight it. */
+:root[data-theme-switching] {
+  transition: none;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Returning visitors in the same session skip the splash. */
+[data-splash="seen"] {
+  --intro-delay: 0s;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
   --color-muted: var(--muted);
-  --color-border: var(--border);
+  --color-line: var(--line);
   --color-accent: var(--accent);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-on-accent: var(--on-accent);
+  --font-sans: var(--font-mona), system-ui, sans-serif;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html {
-  scroll-behavior: smooth;
+/* Mouse and trackpad: the native scrollbar (which reserves an opaque gutter) is replaced by
+   <ScrollThumb>, which floats over the content with no track. Touch keeps its native overlay bar. */
+@media (pointer: fine) {
+  html {
+    scrollbar-width: none;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  letter-spacing: 0.01em;
+  /* Safety net: nothing may widen the page sideways. clip, unlike hidden, keeps sticky working. */
+  overflow-x: clip;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  font-variation-settings: "wdth" 100;
 }
 
 ::selection {
-  background: #1c1c1c;
-  color: #fafaf9;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* The footer is an accent block, where ink-on-paper selection would be orange on orange in the dark theme. */
+.accent-block ::selection {
+  background: var(--on-accent);
+  color: var(--accent);
+}
+
+/* Fine grain over everything, like leather or heavy paper stock. */
+.grain {
+  /* Pre-tinted noise (light specks on dark, dark specks on light) at plain opacity. No blend mode,
+     so the browser never has to re-blend the whole page under it while scrolling. */
+  background-image: var(--grain);
+  opacity: var(--grain-opacity);
+}
+
+/* Theme switch label: "Lights on" in the dark, "Lights off" in the light. */
+.theme-label-light,
+:root[data-theme="light"] .theme-label-dark {
+  display: none;
+}
+
+:root[data-theme="light"] .theme-label-light {
+  display: inline;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 0.1em 0.4em;
+  border: 1px solid currentColor;
+  font: inherit;
+  font-size: 0.85em;
+  line-height: 1.2;
+  text-align: center;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Display type: condensed and light at rest, the variable axes do the rest. */
+.display {
+  font-variation-settings:
+    "wght" 250,
+    "wdth" 78;
+  line-height: 0.86;
+  letter-spacing: -0.02em;
+}
+
+/* Work titles swell on hover, echoing the hero. */
+.swell {
+  transition:
+    font-variation-settings 0.9s var(--ease-out-expo),
+    color 0.6s var(--ease-out-expo);
+}
+
+.group:hover .swell,
+.group:focus-visible .swell {
+  font-variation-settings:
+    "wght" 560,
+    "wdth" 104;
+}
+
+/* Opening sequence: the splash traces the name, melts away, and the hero rises underneath. */
+.splash {
+  --splash-stroke: var(--on-accent);
+  animation: splash-done 0s linear 2.8s forwards;
+}
+
+[data-splash="seen"] .splash {
+  display: none;
+}
+
+.splash-name {
+  font-size: 10.5vw;
+  font-variation-settings:
+    "wght" 800,
+    "wdth" 125;
+  letter-spacing: -0.02em;
+  fill-opacity: 0;
+  stroke: var(--splash-stroke);
+  stroke-width: 1.5;
+  stroke-dasharray: 3000;
+  stroke-dashoffset: 3000;
+  animation:
+    splash-draw 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards,
+    splash-fill 0.55s ease-out 1.15s forwards;
+}
+
+@media (max-width: 767px) {
+  .splash-name {
+    font-size: 12.5vw;
+  }
+}
+
+.splash-fall {
+  animation: splash-fall 1s cubic-bezier(0.55, 0, 0.8, 0.45) 1.75s forwards;
+}
+
+/* Blueprint mode (press G): sections show their bounds. */
+[data-blueprint] main section {
+  outline: 1px dashed color-mix(in srgb, var(--ink) 40%, transparent);
+  outline-offset: -1px;
+}
+
+.letter-rise {
+  animation: letter-rise 1.3s var(--ease-out-expo) both;
+}
+
+.intro-fade {
+  animation: intro-fade 1.2s var(--ease-out-expo) calc(var(--intro-delay) + 1.4s) both;
+}
+
+@keyframes splash-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes splash-fill {
+  to {
+    fill-opacity: 1;
+    stroke-width: 0;
+  }
+}
+
+@keyframes splash-fall {
+  to {
+    transform: translateY(125vh);
+  }
+}
+
+@keyframes splash-done {
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes letter-rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes intro-fade {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash {
+    display: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
 }

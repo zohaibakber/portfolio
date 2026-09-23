@@ -1,41 +1,32 @@
-export const spec47 = {
-  name: "SPEC47",
-  url: "https://specs47.com/",
-} as const;
-
 export const portfolio = {
   name: "Zohaib Akber",
   title: "Full-Stack Developer",
   location: "Lahore, Pakistan",
-  phone: "03114728177",
   email: "mail@zohaibakber.com",
   website: "zohaibakber.com",
-  summary:
-    "Full-stack web developer with experience designing and developing responsive, production-ready web projects. Skilled in JavaScript, TypeScript, SQL, PostgreSQL, Git, Python, and C++. Experienced in building e-commerce platforms, CMS-driven websites, and collaborating with design teams.",
+  intro: "Full-stack developer in Lahore, Pakistan.",
+  statement:
+    "I turn studio designs into fast, precise websites, from the first Figma frame to a live storefront.",
   projects: [
     {
-      name: "Krakvik Dorazio",
+      name: "Kråkvik & D'Orazio",
       url: "https://krakvikdorazio.com",
-      role: "Frontend Developer",
-      stack: null,
-      description:
-        "Collaborated with Danish design firm SPEC47 to develop the Krakvik Dorazio website. Converted Figma design concepts into a responsive and production-ready website with a focus on clean layout, performance, and cross-device compatibility.",
+      image: "/work/krakvik.webp",
+      note: "Built with SPEC47",
     },
     {
-      name: "Silvens Store",
-      url: "https://silvens.store",
-      role: "Full-Stack Developer",
-      stack: "Next.js, Shopify",
-      description:
-        "Designed and developed a modern e-commerce storefront using Next.js. Integrated Shopify as the backend commerce platform for product management, inventory, and checkout functionality. Focused on performance, SEO, and seamless shopping experiences.",
-    },
-    {
-      name: "LAFINE",
+      name: "Lafine",
       url: "https://lafine-lab.com",
-      role: "Frontend Developer",
-      stack: null,
-      description:
-        "Developed the website based on designs provided by Danish design firm SPEC47. Built a modern fashion e-commerce experience focused on visual presentation, performance, responsive design, and design accuracy.",
+      image: "/work/lafine.webp",
+      note: "Built with SPEC47",
+    },
+    {
+      name: "Silvens",
+      url: "https://silvens.store",
+      image: "/work/silvens.webp",
+      note: "Next.js and Shopify",
     },
   ],
 } as const;
+
+export type Project = (typeof portfolio.projects)[number];

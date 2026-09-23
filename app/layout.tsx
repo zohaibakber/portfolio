@@ -1,20 +1,24 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Mona_Sans } from "next/font/google";
+import { ScrollThumb } from "@/components/scroll-thumb";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { portfolio } from "@/lib/portfolio";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const monaSans = Mona_Sans({
+  variable: "--font-mona",
   subsets: ["latin"],
+  axes: ["wdth"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const bootScript = `try{var d=document.documentElement,s=sessionStorage,t=localStorage.getItem("za-theme")||"dark";d.dataset.theme=t;if(t==="light"){var m=document.querySelector('meta[name="theme-color"]');m&&m.setAttribute("content","#f4efe6")}if(s.getItem("za-splash")){d.dataset.splash="seen"}else{s.setItem("za-splash","1")}}catch(e){}`;
 
-const title = `${portfolio.name} — ${portfolio.title}`;
+export const viewport: Viewport = {
+  themeColor: "#070605",
+};
+
+const title = `${portfolio.name}, ${portfolio.title}`;
 const description =
   "Full-stack web developer based in Lahore, Pakistan. Building responsive, production-ready web projects with Next.js, React, and modern tooling.";
 
@@ -48,11 +52,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full">{children}</body>
+    <html lang="en" className={`${monaSans.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        {/* Runs before first paint: restores the chosen theme, and only the first visit in a session sees the splash. */}
+        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
+      </head>
+      <body className="min-h-full">
+        <SmoothScroll />
+        <ScrollThumb />
+        {children}
+        <div aria-hidden className="grain pointer-events-none fixed inset-0 z-[60]" />
+      </body>
     </html>
   );
 }

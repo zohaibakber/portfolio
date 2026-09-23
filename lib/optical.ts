@@ -1,0 +1,132 @@
+/**
+ * Left side bearings (em) of Mona Sans at the cuts used for large type, measured from the font file
+ * (and confirmed against rendered glyphs). At display sizes that built-in spacing is 5-9px, so the ink
+ * of a big line starts visibly right of the grid line its box sits on.
+ */
+const SIDE_BEARINGS = {
+  display: {
+    A: 0.0123,
+    B: 0.0667,
+    C: 0.0441,
+    D: 0.0667,
+    E: 0.0667,
+    F: 0.0667,
+    G: 0.0441,
+    H: 0.0667,
+    I: 0.0667,
+    J: 0.004,
+    K: 0.0667,
+    L: 0.0667,
+    M: 0.0669,
+    N: 0.0667,
+    O: 0.0441,
+    P: 0.0667,
+    Q: 0.0441,
+    R: 0.0667,
+    S: 0.0304,
+    T: 0.0041,
+    U: 0.0585,
+    V: 0.0123,
+    W: 0.0177,
+    X: 0.0102,
+    Y: 0.0061,
+    Z: 0.0131,
+    a: 0.0441,
+    b: 0.0607,
+    c: 0.0428,
+    d: 0.0441,
+    e: 0.0405,
+    f: 0.02,
+    g: 0.0415,
+    h: 0.0607,
+    i: 0.0524,
+    j: -0.0026,
+    k: 0.0607,
+    l: 0.0607,
+    m: 0.0607,
+    n: 0.0607,
+    o: 0.0428,
+    p: 0.0607,
+    q: 0.0441,
+    r: 0.0607,
+    s: 0.0283,
+    t: 0.018,
+    u: 0.0568,
+    v: 0.0141,
+    w: 0.013,
+    x: 0.0136,
+    y: 0.0155,
+    z: 0.0151,
+  },
+  statement: {
+    A: 0.0208,
+    B: 0.0759,
+    C: 0.0447,
+    D: 0.0759,
+    E: 0.0759,
+    F: 0.0759,
+    G: 0.0445,
+    H: 0.0759,
+    I: 0.0759,
+    J: 0.0186,
+    K: 0.0759,
+    L: 0.0759,
+    M: 0.076,
+    N: 0.0759,
+    O: 0.0447,
+    P: 0.0759,
+    Q: 0.0447,
+    R: 0.0759,
+    S: 0.0375,
+    T: 0.0187,
+    U: 0.0655,
+    V: 0.0208,
+    W: 0.0248,
+    X: 0.0179,
+    Y: 0.0165,
+    Z: 0.0259,
+    a: 0.0447,
+    b: 0.0689,
+    c: 0.0423,
+    d: 0.0447,
+    e: 0.0373,
+    f: 0.0134,
+    g: 0.0432,
+    h: 0.0689,
+    i: 0.0598,
+    j: -0.0208,
+    k: 0.0689,
+    l: 0.0689,
+    m: 0.0689,
+    n: 0.0689,
+    o: 0.0423,
+    p: 0.0689,
+    q: 0.0447,
+    r: 0.0689,
+    s: 0.0354,
+    t: 0.0193,
+    u: 0.0614,
+    v: 0.0183,
+    w: 0.0087,
+    x: 0.0157,
+    y: 0.0178,
+    z: 0.0242,
+  },
+} as const;
+
+export type OpticalCut = keyof typeof SIDE_BEARINGS;
+
+/**
+ * Negative start margin for the FIRST glyph of a large line, so its ink lands on the grid line.
+ * A margin, not `text-indent`: text-indent is inherited, and our letters and words are inline-blocks
+ * that would each apply it again.
+ */
+export function opticalMargin(char: string, cut: OpticalCut = "display") {
+  return { marginInlineStart: opticalOffset(char, cut) };
+}
+
+/** The same pull as a length, for plain-text blocks where `text-indent` is safe (no inline-block children). */
+export function opticalOffset(char: string, cut: OpticalCut = "display") {
+  const bearings: Record<string, number> = SIDE_BEARINGS[cut];
+  return `-${bearings[char] ?? 0}em`;
+}
