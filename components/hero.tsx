@@ -18,18 +18,13 @@ import { opticalMargin } from "@/lib/optical";
 const REST = { wght: 250, wdth: 78 };
 const PEAK = { wght: 900, wdth: 125 };
 const FAR = -1e5;
-// Seconds the splash holds the stage; matches --intro-delay in globals.css.
-const splashDelay = () => (document.documentElement.dataset.splash === "seen" ? 0 : 1.9);
 
-// After this long without input the name starts to breathe through its weights.
 const IDLE_MS = 12_000;
 
 type Pointer = {
   x: MotionValue<number>;
   y: MotionValue<number>;
-  /** 0 while the visitor is active, eases to 1 when idle. */
   idle: MotionValue<number>;
-  /** Seconds of accumulated idle time, drives the breathing wave. */
   clock: MotionValue<number>;
 };
 
@@ -42,14 +37,12 @@ function Letter({
   char: string;
   index: number;
   pointer: Pointer;
-  /** First letter of a line: pulled left by its side bearing so the ink sits on the grid line. */
   first?: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const center = useRef({ x: 0, y: 0, radius: 0 });
   const reduce = useReducedMotion();
 
-  // Proximity to the cursor, eased with a smoothstep so letters swell gently.
   const near = useTransform(() => {
     const { x, y, radius } = center.current;
     const px = pointer.x.get();
@@ -78,8 +71,7 @@ function Letter({
       };
     };
 
-    // Measure once the letters have finished rising into place.
-    const timer = setTimeout(measure, reduce ? 0 : (splashDelay() + 1.8) * 1000);
+    const timer = setTimeout(measure, reduce ? 0 : 1800);
     void document.fonts?.ready.then(measure);
     window.addEventListener("resize", measure);
     return () => {
@@ -99,7 +91,7 @@ function Letter({
         className="letter-rise inline-block"
         style={{
           fontVariationSettings,
-          animationDelay: `calc(var(--intro-delay) + ${0.35 + index * 0.06}s)`,
+          animationDelay: `${0.15 + index * 0.06}s`,
         }}
       >
         {char}
@@ -140,7 +132,6 @@ export function Hero({ first, last, intro }: { first: string; last: string; intr
     clock,
   };
 
-  // The breathing clock only ticks while the page is idle; no frame loop runs otherwise.
   useEffect(() => {
     let frame = 0;
     let previous = 0;
@@ -212,8 +203,7 @@ export function Hero({ first, last, intro }: { first: string; last: string; intr
     };
   }, [reduce, pointer.x, pointer.y]);
 
-  // svh, not dvh: the small viewport height stays fixed while the mobile address bar slides
-  // in and out, so the hero and the name's size don't jump as you scroll.
+  // svh, not dvh: stays fixed while the mobile address bar slides, so the hero does not jump.
   return (
     <section
       ref={section}

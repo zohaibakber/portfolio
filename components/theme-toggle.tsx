@@ -5,11 +5,6 @@ import { RollText } from "@/components/roll-text";
 
 const THEME_COLORS = { dark: "#070605", light: "#f4efe6" } as const;
 
-/**
- * "Lights on / Lights off". The new theme is revealed as a circle growing out of the click point
- * (View Transitions API); browsers without it, or visitors who prefer reduced motion, get the
- * plain colour crossfade instead. The label is picked in CSS so it is right before hydration.
- */
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const toggle = (event: MouseEvent<HTMLButtonElement>) => {
     const root = document.documentElement;
@@ -30,7 +25,6 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       return;
     }
 
-    // Keyboard activation reports 0,0; grow from the button itself instead.
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX || rect.left + rect.width / 2;
     const y = event.clientY || rect.top + rect.height / 2;
@@ -49,7 +43,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
           },
         );
       })
-      // A skipped transition (e.g. a second click mid-reveal) rejects `ready`; the theme is still applied.
+      // A skipped transition rejects `ready`; the theme is still applied.
       .catch(() => {});
     void transition.finished.finally(() => delete root.dataset.themeSwitching);
   };

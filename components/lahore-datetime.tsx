@@ -9,7 +9,6 @@ const format = new Intl.DateTimeFormat("en-GB", {
   hour12: false,
 });
 
-/** Local time in Lahore, useful for clients booking calls across time zones. */
 export function LahoreDateTime() {
   const [time, setTime] = useState<string | null>(null);
 

@@ -15,7 +15,6 @@ function Word({
   range: [number, number];
   progress: MotionValue<number>;
   still: boolean;
-  /** Opening word: pulled left by its first glyph's side bearing so the ink sits on the grid line. */
   first: boolean;
 }) {
   const opacity = useTransform(progress, range, [still ? 1 : 0.14, 1]);
@@ -30,7 +29,6 @@ function Word({
   );
 }
 
-/** Reads itself in as the paragraph scrolls through the viewport. */
 export function Statement({ text }: { text: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const reduce = useReducedMotion();

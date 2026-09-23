@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
-/* Two themes. Dark: near-black paper, saddle-orange type. Light: ivory paper, black type.
-   Orange stays constant as the brand block (splash, footer). Hovering the work flips to the other theme. */
 @property --paper {
   syntax: "<color>";
   inherits: true;
@@ -25,7 +23,6 @@
   --accent: #f26a1b;
   --on-accent: #120d0a;
   --muted: var(--ink);
-  --intro-delay: 1.9s;
   transition:
     --paper 0.8s cubic-bezier(0.16, 1, 0.3, 1),
     --ink 0.8s cubic-bezier(0.16, 1, 0.3, 1),
@@ -53,7 +50,7 @@
   color-scheme: light;
 }
 
-/* The circular theme reveal is a view transition; the colour crossfade would fight it. */
+/* The colour crossfade would fight the circular view-transition reveal. */
 :root[data-theme-switching] {
   transition: none;
 }
@@ -62,11 +59,6 @@
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
-}
-
-/* Returning visitors in the same session skip the splash. */
-[data-splash="seen"] {
-  --intro-delay: 0s;
 }
 
 @theme inline {
@@ -80,8 +72,6 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Mouse and trackpad: the native scrollbar (which reserves an opaque gutter) is replaced by
-   <ScrollThumb>, which floats over the content with no track. Touch keeps its native overlay bar. */
 @media (pointer: fine) {
   html {
     scrollbar-width: none;
@@ -93,7 +83,7 @@
 }
 
 body {
-  /* Safety net: nothing may widen the page sideways. clip, unlike hidden, keeps sticky working. */
+  /* clip, not hidden: hidden would break the sticky footer. */
   overflow-x: clip;
   background: var(--paper);
   color: var(--ink);
@@ -108,21 +98,16 @@ body {
   color: var(--paper);
 }
 
-/* The footer is an accent block, where ink-on-paper selection would be orange on orange in the dark theme. */
 .accent-block ::selection {
   background: var(--on-accent);
   color: var(--accent);
 }
 
-/* Fine grain over everything, like leather or heavy paper stock. */
 .grain {
-  /* Pre-tinted noise (light specks on dark, dark specks on light) at plain opacity. No blend mode,
-     so the browser never has to re-blend the whole page under it while scrolling. */
   background-image: var(--grain);
   opacity: var(--grain-opacity);
 }
 
-/* Theme switch label: "Lights on" in the dark, "Lights off" in the light. */
 .theme-label-light,
 :root[data-theme="light"] .theme-label-dark {
   display: none;
@@ -149,7 +134,6 @@ kbd {
   border-radius: 2px;
 }
 
-/* Display type: condensed and light at rest, the variable axes do the rest. */
 .display {
   font-variation-settings:
     "wght" 250,
@@ -158,7 +142,6 @@ kbd {
   letter-spacing: -0.02em;
 }
 
-/* Work titles swell on hover, echoing the hero. */
 .swell {
   transition:
     font-variation-settings 0.9s var(--ease-out-expo),
@@ -172,50 +155,11 @@ kbd {
     "wdth" 104;
 }
 
-/* Opening sequence: the splash traces the name, melts away, and the hero rises underneath. */
-.splash {
-  --splash-stroke: var(--on-accent);
-  animation: splash-done 0s linear 2.8s forwards;
-}
-
-[data-splash="seen"] .splash {
-  display: none;
-}
-
-.splash-name {
-  font-size: 10.5vw;
-  font-variation-settings:
-    "wght" 800,
-    "wdth" 125;
-  letter-spacing: -0.02em;
-  fill-opacity: 0;
-  stroke: var(--splash-stroke);
-  stroke-width: 1.5;
-  stroke-dasharray: 3000;
-  stroke-dashoffset: 3000;
-  animation:
-    splash-draw 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards,
-    splash-fill 0.55s ease-out 1.15s forwards;
-}
-
-@media (max-width: 767px) {
-  .splash-name {
-    font-size: 12.5vw;
-  }
-}
-
-.splash-fall {
-  animation: splash-fall 1s cubic-bezier(0.55, 0, 0.8, 0.45) 1.75s forwards;
-}
-
-/* Blueprint mode (press G). Everything here is attached to the page itself, so it scrolls with
-   the content instead of being re-positioned by script. */
 [data-blueprint] main section {
   outline: 1px dashed color-mix(in srgb, var(--ink) 40%, transparent);
   outline-offset: -1px;
 }
 
-/* 8px baseline grid, painted on the page so the lines travel with the text. */
 [data-blueprint] main,
 [data-blueprint] footer {
   background-image: repeating-linear-gradient(
@@ -225,7 +169,6 @@ kbd {
   );
 }
 
-/* Type specs: dashed box on the element, font label above it, measured size below. */
 [data-blueprint] [data-spec] {
   outline: 1px dashed var(--ink);
   outline-offset: -1px;
@@ -238,7 +181,6 @@ kbd {
   padding: 4px 8px;
   background: var(--ink);
   color: var(--paper);
-  /* Reset everything the spec'd element would otherwise pass down to its own labels. */
   font: 400 11px/1 var(--font-sans);
   font-variation-settings: normal;
   letter-spacing: 0;
@@ -259,7 +201,6 @@ kbd {
   right: 0;
 }
 
-/* The reveal masks around project titles would clip their labels; the reveal is long done. */
 [data-blueprint] .reveal-mask {
   overflow: visible;
 }
@@ -269,32 +210,7 @@ kbd {
 }
 
 .intro-fade {
-  animation: intro-fade 1.2s var(--ease-out-expo) calc(var(--intro-delay) + 1.4s) both;
-}
-
-@keyframes splash-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes splash-fill {
-  to {
-    fill-opacity: 1;
-    stroke-width: 0;
-  }
-}
-
-@keyframes splash-fall {
-  to {
-    transform: translateY(125vh);
-  }
-}
-
-@keyframes splash-done {
-  to {
-    visibility: hidden;
-  }
+  animation: intro-fade 1.2s var(--ease-out-expo) 1.2s both;
 }
 
 @keyframes letter-rise {
@@ -318,10 +234,6 @@ kbd {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .splash {
-    display: none;
-  }
-
   *,
   *::before,
   *::after {

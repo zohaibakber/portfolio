@@ -12,7 +12,7 @@ const monaSans = Mona_Sans({
   axes: ["wdth"],
 });
 
-const bootScript = `try{var d=document.documentElement,s=sessionStorage,t=localStorage.getItem("za-theme")||"dark";d.dataset.theme=t;if(t==="light"){var m=document.querySelector('meta[name="theme-color"]');m&&m.setAttribute("content","#f4efe6")}if(s.getItem("za-splash")){d.dataset.splash="seen"}else{s.setItem("za-splash","1")}}catch(e){}`;
+const bootScript = `try{var t=localStorage.getItem("za-theme")||"dark";document.documentElement.dataset.theme=t;if(t==="light"){var m=document.querySelector('meta[name="theme-color"]');m&&m.setAttribute("content","#f4efe6")}}catch(e){}`;
 
 export const viewport: Viewport = {
   themeColor: "#070605",
@@ -54,7 +54,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${monaSans.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
-        {/* Runs before first paint: restores the chosen theme, and only the first visit in a session sees the splash. */}
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
       <body className="min-h-full">

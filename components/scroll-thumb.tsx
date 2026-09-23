@@ -12,16 +12,9 @@ import { useEffect, useRef, useState } from "react";
 
 const MIN_THUMB = 48;
 
-/**
- * A slim scroll thumb that floats over the content. The native scrollbar reserves its own gutter,
- * so its "transparent" track still shows a strip of page colour beside the orange footer; this one
- * has no track at all. Only for fine pointers: phones keep their native overlay scrollbar.
- * Wheel, keyboard and trackpad scrolling are untouched; the thumb can also be dragged.
- */
 export function ScrollThumb() {
   const { scrollYProgress } = useScroll();
   const [overFooter, setOverFooter] = useState(false);
-  // Hidden until the first measurement, so it never shows a placeholder size growing into the real one.
   const [measured, setMeasured] = useState(false);
   const view = useMotionValue(0);
   const thumbHeight = useMotionValue(0);
@@ -37,7 +30,6 @@ export function ScrollThumb() {
       const height = Math.max(MIN_THUMB, (viewport / page) * viewport);
       view.set(viewport);
       if (first) {
-        // First measurement lands instantly (while still invisible); later page-height changes ease.
         thumbHeight.jump(height);
         first = false;
         setMeasured(true);
@@ -55,7 +47,6 @@ export function ScrollThumb() {
     };
   }, [thumbHeight, view]);
 
-  // Over the orange footer the ink colour would vanish, so the thumb switches to the footer's text colour.
   useMotionValueEvent(y, "change", (offset) => {
     const footerTop = document.getElementById("main-end")?.getBoundingClientRect().top ?? Infinity;
     setOverFooter(offset + thumbHeight.get() / 2 > footerTop);

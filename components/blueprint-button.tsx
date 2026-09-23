@@ -2,7 +2,6 @@
 
 import { BLUEPRINT_TOGGLE } from "@/components/blueprint";
 
-/** Clickable twin of the G shortcut, so blueprint mode also works by mouse and touch. */
 export function BlueprintButton({ label }: { label: string }) {
   return (
     <button

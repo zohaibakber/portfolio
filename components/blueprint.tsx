@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { isReservedKeypress } from "@/lib/keys";
 
 const COLUMNS = 12;
-/** Window event that toggles blueprint mode, fired by the header button. */
 export const BLUEPRINT_TOGGLE = "za:blueprint-toggle";
 
 function describe(el: HTMLElement) {
@@ -16,14 +15,6 @@ function describe(el: HTMLElement) {
   return `${size}px / ${Number.isNaN(Number(leading)) ? "normal" : leading}${axes !== "normal" ? `, ${axes}` : ""}`;
 }
 
-/**
- * Press G: the page shows its working. Column grid, baseline, and type specs for every element
- * marked `data-spec`, the way a designer hands it over and a developer builds it.
- *
- * Outlines and labels are drawn by CSS on the elements themselves (see globals.css), fed through
- * data attributes. An overlay that re-measured elements every frame always trailed the scroll by a
- * frame (Lenis on desktop, compositor scrolling on mobile), so the boxes wobbled; these can't.
- */
 export function Blueprint() {
   const [open, setOpen] = useState(false);
   const [viewport, setViewport] = useState("");
@@ -49,7 +40,6 @@ export function Blueprint() {
     root.dataset.blueprint = "";
 
     const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-spec]"));
-    // Labels are absolutely positioned pseudo-elements, so their element must be positioned.
     const madeRelative = targets.filter((el) => getComputedStyle(el).position === "static");
     madeRelative.forEach((el) => (el.style.position = "relative"));
     targets.forEach(
@@ -89,8 +79,6 @@ export function Blueprint() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          {/* Column grid, dropping in one column at a time. Fixed is right here: it is vertical-only,
-              so scrolling never moves it relative to the content. */}
           <div
             aria-hidden
             className="absolute inset-0 grid grid-cols-4 gap-4 px-5 md:grid-cols-12 md:gap-6 md:px-8"
@@ -106,8 +94,6 @@ export function Blueprint() {
             ))}
           </div>
 
-          {/* Top centre: the one strip of the viewport no spec label ever lands on. */}
-          {/* The overlay ignores the pointer so the page stays usable; only this panel takes clicks. */}
           <div className="pointer-events-auto absolute top-3 left-1/2 flex -translate-x-1/2 items-center gap-4 bg-ink py-2 pr-2 pl-3 text-xs leading-relaxed whitespace-nowrap text-paper">
             <div>
               <p>Blueprint mode</p>

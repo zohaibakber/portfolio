@@ -26,11 +26,9 @@ function consoleNote(email: string) {
   );
 }
 
-/** Hidden extras. Nothing here is announced on the page. */
 export function EasterEggs({ email }: { email: string }) {
   useEffect(() => consoleNote(email), [email]);
 
-  // Switch tabs and the page asks you back; return and it says hello.
   useEffect(() => {
     const original = document.title;
     let timer: ReturnType<typeof setTimeout>;

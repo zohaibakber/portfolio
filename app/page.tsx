@@ -1,7 +1,6 @@
 import { EasterEggs } from "@/components/easter-eggs";
 import { Hero } from "@/components/hero";
 import { LahoreDateTime } from "@/components/lahore-datetime";
-import { Splash } from "@/components/splash";
 import { Statement } from "@/components/statement";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { WorkList } from "@/components/work-list";
@@ -15,7 +14,6 @@ export default function Home() {
 
   return (
     <>
-      <Splash text={name} />
       <EasterEggs email={email} />
 
       <main className="relative z-10 bg-paper">
@@ -29,7 +27,6 @@ export default function Home() {
         </section>
 
         <section aria-label="Approach" className="px-5 py-32 md:px-8 md:py-56">
-          {/* Columns 4-12 of the page grid, the same grid blueprint mode draws. */}
           <div className="md:grid md:grid-cols-12 md:gap-x-6">
             <div className="md:col-span-9 md:col-start-4">
               <Statement text={statement} />
@@ -47,7 +44,6 @@ export default function Home() {
           <p className="mb-4 opacity-80 md:mb-6">Have a project in mind?</p>
           <a
             href={`mailto:${email}`}
-            // Dragging should select the address to copy it, not drag the link away.
             draggable={false}
             className="group display block text-[12vw] select-text md:text-[min(11rem,calc((100vw-4rem)/11.5))] md:whitespace-nowrap"
           >
@@ -59,7 +55,6 @@ export default function Home() {
                   className="swell inline-block"
                   style={{
                     transitionDelay: `${i * 22}ms`,
-                    // First letter's ink on the first grid line, not its side bearing.
                     ...(i === 0 ? opticalMargin(char) : {}),
                   }}
                 >
@@ -75,7 +70,6 @@ export default function Home() {
             <ThemeToggle />
             <span>
               ©{" "}
-              {/* Rendered at build time, corrected to the visitor's current year before first paint. */}
               <span id="copyright-year" suppressHydrationWarning>
                 {currentYear}
               </span>

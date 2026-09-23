@@ -1,8 +1,3 @@
-/**
- * Left side bearings (em) of Mona Sans at the cuts used for large type, measured from the font file
- * (and confirmed against rendered glyphs). At display sizes that built-in spacing is 5-9px, so the ink
- * of a big line starts visibly right of the grid line its box sits on.
- */
 const SIDE_BEARINGS = {
   display: {
     A: 0.0123,
@@ -116,16 +111,11 @@ const SIDE_BEARINGS = {
 
 export type OpticalCut = keyof typeof SIDE_BEARINGS;
 
-/**
- * Negative start margin for the FIRST glyph of a large line, so its ink lands on the grid line.
- * A margin, not `text-indent`: text-indent is inherited, and our letters and words are inline-blocks
- * that would each apply it again.
- */
+// A margin, not text-indent: text-indent is inherited by the inline-block letters and words.
 export function opticalMargin(char: string, cut: OpticalCut = "display") {
   return { marginInlineStart: opticalOffset(char, cut) };
 }
 
-/** The same pull as a length, for plain-text blocks where `text-indent` is safe (no inline-block children). */
 export function opticalOffset(char: string, cut: OpticalCut = "display") {
   const bearings: Record<string, number> = SIDE_BEARINGS[cut];
   return `-${bearings[char] ?? 0}em`;

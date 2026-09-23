@@ -24,7 +24,6 @@ export function WorkList({ projects }: { projects: readonly Project[] }) {
   const spring = { stiffness: 170, damping: 22, mass: 0.5 };
   const sx = useSpring(x, spring);
   const sy = useSpring(y, spring);
-  // The preview leans into the direction it is dragged, like paper on a string.
   const velocity = useVelocity(sx);
   const rotate = useTransform(velocity, [-2400, 2400], reduce ? [0, 0] : [-9, 9], {
     clamp: true,
@@ -32,7 +31,6 @@ export function WorkList({ projects }: { projects: readonly Project[] }) {
 
   const visible = active !== null;
 
-  // Pointing at the work flips the page to the opposite theme, as if the lights were switched.
   useEffect(() => {
     const root = document.documentElement;
     if (visible) root.dataset.invert = "";
@@ -75,10 +73,8 @@ export function WorkList({ projects }: { projects: readonly Project[] }) {
               target="_blank"
               rel="noopener noreferrer"
               onPointerEnter={(event) => {
-                // Mouse only: on touch, a finger landing on a row (even to scroll) fires this too,
-                // which flashed the page towards the inverted theme mid-scroll.
+                // Touch fires pointerenter too (even when starting a scroll); only a mouse hovers.
                 if (event.pointerType !== "mouse") return;
-                // Start from the cursor rather than flying in from wherever it last was.
                 if (!visible) {
                   x.jump(event.clientX);
                   y.jump(event.clientY);
@@ -87,7 +83,6 @@ export function WorkList({ projects }: { projects: readonly Project[] }) {
                 }
                 setActive(i);
               }}
-              // Keyboard focus only; a tap also focuses the link and must not trigger the hover state.
               onFocus={(event) => {
                 if (event.currentTarget.matches(":focus-visible")) setActive(i);
               }}
@@ -100,7 +95,6 @@ export function WorkList({ projects }: { projects: readonly Project[] }) {
               <span className="reveal-mask block overflow-y-clip md:col-span-9">
                 <motion.span
                   data-spec="Project"
-                  // Plain text inside, so text-indent is safe here: ink of the first letter on the grid line.
                   style={{ textIndent: opticalOffset(project.name.charAt(0)) }}
                   className="swell display block pt-[0.08em] text-[clamp(2.75rem,8.5vw,9rem)] whitespace-nowrap"
                   variants={{ hidden: { y: "105%" }, shown: { y: "0%" } }}

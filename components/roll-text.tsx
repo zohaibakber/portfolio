@@ -1,7 +1,3 @@
-/**
- * Letters roll up to reveal a copy of themselves when the nearest `.group` is hovered.
- * CSS only, so it can render on the server.
- */
 export function RollText({ text }: { text: string }) {
   return (
     <>
