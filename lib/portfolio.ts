@@ -6,7 +6,7 @@ export const portfolio = {
   website: "zohaibakber.com",
   intro: "Full-stack developer in Lahore, Pakistan.",
   statement:
-    "I turn studio designs into fast, precise websites, from the first Figma frame to a live storefront.",
+    "I turn designs into fast, precise websites, from the first Figma frame to a live storefront.",
   projects: [
     {
       name: "Kråkvik & D'Orazio",

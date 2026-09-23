@@ -3,17 +3,12 @@
 import type { MouseEvent } from "react";
 import { RollText } from "@/components/roll-text";
 
-const THEME_COLORS = { dark: "#070605", light: "#f4efe6" } as const;
-
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const toggle = (event: MouseEvent<HTMLButtonElement>) => {
     const root = document.documentElement;
     const next = root.dataset.theme === "light" ? "dark" : "light";
     const apply = () => {
       root.dataset.theme = next;
-      document
-        .querySelector('meta[name="theme-color"]')
-        ?.setAttribute("content", THEME_COLORS[next]);
       try {
         localStorage.setItem("za-theme", next);
       } catch {}

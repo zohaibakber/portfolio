@@ -12,10 +12,13 @@ const monaSans = Mona_Sans({
   axes: ["wdth"],
 });
 
-const bootScript = `try{var t=localStorage.getItem("za-theme")||"dark";document.documentElement.dataset.theme=t;if(t==="light"){var m=document.querySelector('meta[name="theme-color"]');m&&m.setAttribute("content","#f4efe6")}}catch(e){}`;
+const themeScript = `(function(){var d=document.documentElement,q=matchMedia("(prefers-color-scheme: light)"),s=function(){try{return localStorage.getItem("za-theme")}catch(e){}},a=function(){var t=s();d.dataset.theme=t==="light"||t==="dark"?t:q.matches?"light":"dark"};a();q.addEventListener("change",a)})()`;
 
 export const viewport: Viewport = {
-  themeColor: "#070605",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#070605" },
+    { media: "(prefers-color-scheme: light)", color: "#f4efe6" },
+  ],
 };
 
 const title = `${portfolio.name}, ${portfolio.title}`;
@@ -54,7 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${monaSans.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: bootScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-full">
         <SmoothScroll />

@@ -82,7 +82,8 @@ function Letter({
 
   return (
     <span
-      className="inline-block overflow-hidden pt-[0.06em]"
+      // clip-path, not overflow-hidden: an overflow-hidden inline-block loses its text baseline.
+      className="inline-block pt-[0.06em] [clip-path:inset(0_-0.5em)]"
       style={first ? opticalMargin(char) : undefined}
       aria-hidden
     >
@@ -214,18 +215,21 @@ export function Hero({ first, last, intro }: { first: string; last: string; intr
       <p className="intro-fade absolute top-6 right-5 max-w-[15rem] text-right text-sm leading-relaxed md:top-8 md:right-8 md:max-w-none md:whitespace-nowrap">
         Open to new projects. <BlueprintButton label="See how it’s built" />
       </p>
-      <motion.div style={{ y: drift, opacity: fade }} className="relative">
+      <motion.div
+        style={{ y: drift, opacity: fade }}
+        className="relative md:grid md:items-baseline-last"
+      >
         <h1
           aria-label={`${first} ${last}`}
           data-spec="Display"
-          className="display text-[min(34vw,calc((100svh-15rem)/1.95))] text-ink md:text-[min(27vw,30rem,calc((100svh-9rem)/1.95))]"
+          className="display text-[min(34vw,calc((100svh-15rem)/1.95))] text-ink md:text-[min(27vw,30rem,calc((100svh-9rem)/1.95))] md:[grid-area:1/1]"
         >
           <Word text={first} offset={0} pointer={pointer} />
           <Word text={last} offset={first.length} pointer={pointer} align="end" />
         </h1>
         <p
           data-spec="Intro"
-          className="intro-fade mt-8 max-w-[20ch] text-base leading-snug text-muted md:absolute md:bottom-[0.4em] md:left-0 md:mt-0 md:w-[calc(25%-1.125rem)] md:max-w-none md:text-lg"
+          className="intro-fade mt-8 max-w-[20ch] text-base leading-snug text-muted md:mt-0 md:w-[calc(25%-1.125rem)] md:max-w-none md:justify-self-start md:text-lg md:[grid-area:1/1]"
         >
           {intro}
         </p>
