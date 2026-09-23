@@ -212,11 +212,13 @@ export function Hero({ first, last, intro }: { first: string; last: string; intr
     };
   }, [reduce, pointer.x, pointer.y]);
 
+  // svh, not dvh: the small viewport height stays fixed while the mobile address bar slides
+  // in and out, so the hero and the name's size don't jump as you scroll.
   return (
     <section
       ref={section}
       id="about"
-      className="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden px-5 pt-24 pb-6 md:px-8 md:pb-8"
+      className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-5 pt-24 pb-6 md:px-8 md:pb-8"
     >
       <ThemeToggle className="intro-fade absolute top-6 left-5 text-sm md:top-8 md:left-8" />
       <p className="intro-fade absolute top-6 right-5 max-w-[15rem] text-right text-sm leading-relaxed md:top-8 md:right-8 md:max-w-none md:whitespace-nowrap">
@@ -226,7 +228,7 @@ export function Hero({ first, last, intro }: { first: string; last: string; intr
         <h1
           aria-label={`${first} ${last}`}
           data-spec="Display"
-          className="display text-[min(34vw,calc((100dvh-15rem)/1.95))] text-ink md:text-[min(27vw,30rem,calc((100dvh-9rem)/1.95))]"
+          className="display text-[min(34vw,calc((100svh-15rem)/1.95))] text-ink md:text-[min(27vw,30rem,calc((100svh-9rem)/1.95))]"
         >
           <Word text={first} offset={0} pointer={pointer} />
           <Word text={last} offset={first.length} pointer={pointer} align="end" />

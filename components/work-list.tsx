@@ -75,6 +75,9 @@ export function WorkList({ projects }: { projects: readonly Project[] }) {
               target="_blank"
               rel="noopener noreferrer"
               onPointerEnter={(event) => {
+                // Mouse only: on touch, a finger landing on a row (even to scroll) fires this too,
+                // which flashed the page towards the inverted theme mid-scroll.
+                if (event.pointerType !== "mouse") return;
                 // Start from the cursor rather than flying in from wherever it last was.
                 if (!visible) {
                   x.jump(event.clientX);
@@ -84,7 +87,10 @@ export function WorkList({ projects }: { projects: readonly Project[] }) {
                 }
                 setActive(i);
               }}
-              onFocus={() => setActive(i)}
+              // Keyboard focus only; a tap also focuses the link and must not trigger the hover state.
+              onFocus={(event) => {
+                if (event.currentTarget.matches(":focus-visible")) setActive(i);
+              }}
               onBlur={() => setActive(null)}
               className="group grid gap-4 py-6 transition-opacity duration-500 group-hover/list:opacity-35 hover:opacity-100! md:grid-cols-12 md:items-end md:gap-x-6 md:py-9"
             >

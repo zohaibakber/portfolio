@@ -41,7 +41,7 @@ export default function Home() {
 
       <footer
         id="contact"
-        className="accent-block sticky bottom-0 z-0 flex min-h-[60dvh] flex-col justify-between bg-accent px-5 pt-24 pb-6 text-on-accent md:min-h-[75dvh] md:px-8 md:pb-8"
+        className="accent-block sticky bottom-0 z-0 flex min-h-[60svh] flex-col justify-between bg-accent px-5 pt-24 pb-6 text-on-accent md:min-h-[75svh] md:px-8 md:pb-8"
       >
         <div>
           <p className="mb-4 opacity-80 md:mb-6">Have a project in mind?</p>
