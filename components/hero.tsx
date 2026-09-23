@@ -33,11 +33,13 @@ function Letter({
   index,
   pointer,
   first = false,
+  last = false,
 }: {
   char: string;
   index: number;
   pointer: Pointer;
   first?: boolean;
+  last?: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const center = useRef({ x: 0, y: 0, radius: 0 });
@@ -84,7 +86,11 @@ function Letter({
     <span
       // clip-path, not overflow-hidden: an overflow-hidden inline-block loses its text baseline.
       className="inline-block pt-[0.06em] [clip-path:inset(0_-0.5em)]"
-      style={first ? opticalMargin(char) : undefined}
+      style={{
+        ...(first ? opticalMargin(char) : {}),
+        // Cancels the trailing -0.02em letter-spacing so the last glyph ends on the line.
+        ...(last ? { marginInlineEnd: "0.02em" } : {}),
+      }}
       aria-hidden
     >
       <motion.span
@@ -115,7 +121,14 @@ function Word({
   return (
     <span className={`block whitespace-nowrap ${align === "end" ? "md:text-right" : ""}`}>
       {Array.from(text).map((char, i) => (
-        <Letter key={i} char={char} index={offset + i} pointer={pointer} first={i === 0} />
+        <Letter
+          key={i}
+          char={char}
+          index={offset + i}
+          pointer={pointer}
+          first={i === 0}
+          last={i === text.length - 1}
+        />
       ))}
     </span>
   );
