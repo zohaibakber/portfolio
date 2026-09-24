@@ -2,7 +2,6 @@ import { EasterEggs } from "@/components/easter-eggs";
 import { Hero } from "@/components/hero";
 import { LahoreDateTime } from "@/components/lahore-datetime";
 import { Statement } from "@/components/statement";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { WorkList } from "@/components/work-list";
 import { opticalMargin } from "@/lib/optical";
 import { portfolio } from "@/lib/portfolio";
@@ -66,8 +65,7 @@ export default function Home() {
         </div>
         <div className="flex flex-col gap-1 text-sm opacity-80 md:flex-row md:justify-between">
           <LahoreDateTime />
-          <p className="flex gap-6">
-            <ThemeToggle />
+          <p>
             <span>
               ©{" "}
               <span id="copyright-year" suppressHydrationWarning>

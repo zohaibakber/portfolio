@@ -226,7 +226,7 @@ export function Hero({ first, last, intro }: { first: string; last: string; intr
     >
       <ThemeToggle className="intro-fade absolute top-6 left-5 text-sm md:top-8 md:left-8" />
       <p className="intro-fade absolute top-6 right-5 max-w-[15rem] text-right text-sm leading-relaxed md:top-8 md:right-8 md:max-w-none md:whitespace-nowrap">
-        Open to new projects. <BlueprintButton label="See how it’s built" />
+        <BlueprintButton label="See how it’s built" />
       </p>
       <motion.div
         style={{ y: drift, opacity: fade }}
