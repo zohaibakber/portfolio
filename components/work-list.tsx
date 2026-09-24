@@ -9,7 +9,7 @@ import {
   useVelocity,
 } from "motion/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { opticalOffset } from "@/lib/optical";
 import type { Project } from "@/lib/portfolio";
 
@@ -30,19 +30,6 @@ export function WorkList({ projects }: { projects: readonly Project[] }) {
   });
 
   const visible = active !== null;
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (visible) root.dataset.invert = "";
-    else delete root.dataset.invert;
-  }, [visible]);
-
-  useEffect(
-    () => () => {
-      delete document.documentElement.dataset.invert;
-    },
-    [],
-  );
 
   return (
     <div

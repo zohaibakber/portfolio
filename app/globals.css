@@ -30,8 +30,7 @@
 }
 
 :root,
-:root[data-theme="dark"],
-:root[data-theme="light"][data-invert] {
+:root[data-theme="dark"] {
   --paper: #070605;
   --ink: #f26a1b;
   --line: #2e1609;
@@ -40,8 +39,7 @@
   color-scheme: dark;
 }
 
-:root[data-theme="light"],
-:root[data-theme="dark"][data-invert] {
+:root[data-theme="light"] {
   --paper: #f4efe6;
   --ink: #120d0a;
   --line: #d6cdbd;
