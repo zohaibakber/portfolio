@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Mona_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ScrollThumb } from "@/components/scroll-thumb";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { portfolio } from "@/lib/portfolio";
@@ -64,6 +66,8 @@ export default function RootLayout({
         <ScrollThumb />
         {children}
         <div aria-hidden className="grain pointer-events-none fixed inset-0 z-[60]" />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
