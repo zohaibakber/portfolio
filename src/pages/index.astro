@@ -113,10 +113,6 @@ const year = new Date().getFullYear();
     color: var(--faint);
   }
 
-  .project:is(:hover, :focus-visible) {
-    font-weight: 420;
-  }
-
   .email {
     grid-area: 6 / 1 / 7 / 4;
     justify-self: start;
@@ -234,10 +230,6 @@ const year = new Date().getFullYear();
     .work li {
       transition: color 250ms var(--ease-out);
     }
-
-    .project {
-      transition: font-weight 400ms var(--ease-out);
-    }
   }
 
   @keyframes rise {
@@ -266,14 +258,6 @@ const year = new Date().getFullYear();
     .year {
       animation-duration: 300ms;
       animation-delay: 0ms;
-    }
-
-    .project {
-      transition: none;
-    }
-
-    .project:is(:hover, :focus-visible) {
-      font-weight: 300;
     }
   }
 </style>
