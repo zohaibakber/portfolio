@@ -18,10 +18,7 @@ cat > "$work/og.svg" <<'SVG'
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#f2f2f0"/>
   <g font-family="Inter Tight" fill="#1e1f21">
-    <text x="48" y="72" font-size="22" font-weight="400">Zohaib Akber</text>
-    <text x="348" y="72" font-size="22" font-weight="400" fill="#6c6f73">Full-stack developer</text>
-    <text x="44" y="430" font-size="112" font-weight="300" letter-spacing="-5">Kråkvik &amp; D’Orazio</text>
-    <text x="44" y="535" font-size="112" font-weight="300" letter-spacing="-5">Lafine, Silvens</text>
+    <text x="36" y="535" font-size="200" font-weight="300" letter-spacing="-9">Zohaib Akber</text>
     <text x="48" y="590" font-size="22" font-weight="400" fill="#6c6f73">zohaibakber.com</text>
   </g>
 </svg>

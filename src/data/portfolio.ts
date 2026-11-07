@@ -2,7 +2,6 @@ export const siteUrl = "https://zohaibakber.com";
 
 export const portfolio = {
   name: "Zohaib Akber",
-  title: "Full-stack developer",
   location: "Lahore, Pakistan",
   timeZone: "Asia/Karachi",
   email: "mail@zohaibakber.com",

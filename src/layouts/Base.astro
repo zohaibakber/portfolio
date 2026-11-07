@@ -8,7 +8,7 @@ interface Props {
   noindex?: boolean;
 }
 
-const { title = `${portfolio.name}, ${portfolio.title}`, noindex = false } = Astro.props;
+const { title = portfolio.name, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, siteUrl);
 const ogImage = new URL("/og.png", siteUrl);
 ---
