@@ -52,7 +52,7 @@ const year = new Date().getFullYear();
   .email,
   .grid-hint,
   .year {
-    animation: fade 600ms var(--ease-out) 650ms both;
+    animation: fade 900ms var(--ease-fade) 700ms both;
   }
 
   .name {
@@ -91,7 +91,7 @@ const year = new Date().getFullYear();
   }
 
   .work li {
-    animation: rise 900ms var(--ease-out) calc(100ms + var(--i) * 70ms) backwards;
+    animation: rise 1100ms var(--ease-reveal) calc(100ms + var(--i) * 90ms) backwards;
   }
 
   .project {
@@ -245,7 +245,7 @@ const year = new Date().getFullYear();
 
   @media (prefers-reduced-motion: reduce) {
     .work li {
-      animation: fade 300ms var(--ease-out) backwards;
+      animation: fade 300ms var(--ease-fade) backwards;
     }
 
     .name,

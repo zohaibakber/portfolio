@@ -4,8 +4,10 @@
   --fog: #6c6f73;
   --faint: #c8c9ca;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --margin: 1.25rem;
-  --gutter: 1rem;
+  --ease-reveal: cubic-bezier(0.5, 0, 0, 1);
+  --ease-fade: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --margin: 1rem;
+  --gutter: 0.5rem;
   --columns: 4;
   --small: 0.875rem;
   color-scheme: light;
@@ -13,8 +15,8 @@
 
 @media (min-width: 48rem) {
   :root {
-    --margin: 2rem;
-    --gutter: 1.5rem;
+    --margin: 1rem;
+    --gutter: 1rem;
     --columns: 12;
     --small: 0.8125rem;
   }
@@ -88,7 +90,8 @@ button {
 
 .link {
   padding-bottom: 0.15em;
-  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px
+    no-repeat;
 }
 
 .link:is(:hover, :focus-visible) {
