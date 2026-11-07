@@ -6,10 +6,9 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-reveal: cubic-bezier(0.5, 0, 0, 1);
   --ease-fade: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --margin: 1rem;
+  --margin: 0.5rem;
   --gutter: 0.5rem;
   --columns: 4;
-  --small: 0.875rem;
   color-scheme: light;
 }
 
@@ -18,7 +17,6 @@
     --margin: 1rem;
     --gutter: 1rem;
     --columns: 12;
-    --small: 0.8125rem;
   }
 }
 
@@ -40,13 +38,19 @@ body {
   background: var(--ground);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-size: var(--small);
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.4;
   letter-spacing: -0.005em;
   font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 48rem) {
+  body {
+    font-size: 0.8125rem;
+  }
 }
 
 a {
@@ -90,8 +94,7 @@ button {
 
 .link {
   padding-bottom: 0.15em;
-  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px
-    no-repeat;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
 }
 
 .link:is(:hover, :focus-visible) {

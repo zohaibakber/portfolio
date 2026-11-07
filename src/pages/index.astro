@@ -292,17 +292,6 @@ const year = new Date().getFullYear();
     toggleGrid();
   });
 
-  const title = document.title;
-  let titleTimer: ReturnType<typeof setTimeout>;
-  document.addEventListener("visibilitychange", () => {
-    clearTimeout(titleTimer);
-    if (document.hidden) {
-      document.title = "Come back soon";
-    } else {
-      document.title = "Welcome back";
-      titleTimer = setTimeout(() => (document.title = title), 1600);
-    }
-  });
 
   const font = getComputedStyle(document.body).fontFamily;
   console.log(
