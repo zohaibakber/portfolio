@@ -18,12 +18,10 @@ const year = new Date().getFullYear();
       {
         projects.map((project, i) => (
           <li style={`--i:${i}`}>
-            <div class="row">
-              <a class="project" href={project.url} target="_blank" rel="noopener">
-                {project.name}
-                <span class="sr-only"> (opens in a new tab)</span>
-              </a>
-            </div>
+            <a class="project" href={project.url} target="_blank" rel="noopener">
+              {project.name}
+              <span class="sr-only"> (opens in a new tab)</span>
+            </a>
           </li>
         ))
       }
@@ -93,13 +91,7 @@ const year = new Date().getFullYear();
   }
 
   .work li {
-    margin-inline: -0.1em;
-    padding: 0.08em 0.1em 0;
-    overflow: clip;
-  }
-
-  .row {
-    animation: rise 900ms var(--ease-out) calc(100ms + var(--i) * 70ms) both;
+    animation: rise 900ms var(--ease-out) calc(100ms + var(--i) * 70ms) backwards;
   }
 
   .project {
@@ -235,7 +227,13 @@ const year = new Date().getFullYear();
 
   @keyframes rise {
     from {
-      transform: translateY(100%);
+      clip-path: inset(100% -0.25em -0.25em);
+      transform: translateY(0.35em);
+    }
+
+    to {
+      clip-path: inset(-0.25em);
+      transform: none;
     }
   }
 
@@ -246,8 +244,8 @@ const year = new Date().getFullYear();
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .row {
-      animation: fade 300ms var(--ease-out) both;
+    .work li {
+      animation: fade 300ms var(--ease-out) backwards;
     }
 
     .name,
