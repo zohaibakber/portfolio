@@ -1,0 +1,49 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Not found" noindex>
+  <main class="grid">
+    <h1>404</h1>
+    <p>This page does not exist or has moved.</p>
+    <a class="link" href="/">Back to the homepage</a>
+  </main>
+</Base>
+
+<style>
+  main {
+    min-height: 100svh;
+    padding-block: var(--margin);
+    align-content: end;
+    row-gap: 1rem;
+  }
+
+  h1 {
+    grid-column: 1 / -1;
+    font-size: min(40vw, 70svh);
+    font-weight: 300;
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    margin-left: -0.05em;
+  }
+
+  p {
+    grid-column: 1 / -1;
+    color: var(--fog);
+  }
+
+  a {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  @media (min-width: 48rem) {
+    p {
+      grid-column: 1 / 4;
+    }
+
+    a {
+      grid-column: 4 / 7;
+    }
+  }
+</style>

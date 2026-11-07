@@ -1,0 +1,329 @@
+---
+import Base from "../layouts/Base.astro";
+import { portfolio } from "../data/portfolio";
+
+const { name, title, email, statement, projects, timeZone } = portfolio;
+const year = new Date().getFullYear();
+---
+
+<Base>
+  <main class="page grid">
+    <h1 class="name">{name}</h1>
+    <p class="role">{title}</p>
+    <p class="time">Lahore <time data-time-zone={timeZone}>--:--</time></p>
+
+    <p class="statement">{statement}</p>
+
+    <ul class="work" aria-label="Selected work">
+      {
+        projects.map((project, i) => (
+          <li style={`--i:${i}`}>
+            <div class="row">
+              <a class="project" href={project.url} target="_blank" rel="noopener">
+                {project.name}
+                <span class="sr-only"> (opens in a new tab)</span>
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a class="email link" href={`mailto:${email}`}>{email}</a>
+    <button class="grid-hint" type="button" data-grid-toggle><kbd>G</kbd> Grid</button>
+    <p class="year">© <span data-year>{year}</span></p>
+  </main>
+
+  <div class="grid grid-overlay" aria-hidden="true">
+    {Array.from({ length: 12 }, () => <span />)}
+  </div>
+</Base>
+
+<style>
+  .page {
+    min-height: 100svh;
+    padding-block: var(--margin);
+    grid-template-rows: auto auto auto 1fr auto auto;
+    align-items: start;
+  }
+
+  .name,
+  .role,
+  .time,
+  .statement,
+  .email,
+  .grid-hint,
+  .year {
+    animation: fade 600ms var(--ease-out) 650ms both;
+  }
+
+  .name {
+    grid-area: 1 / 1 / 2 / 3;
+    font-size: inherit;
+    font-weight: 400;
+  }
+
+  .time {
+    grid-area: 1 / 3 / 2 / 5;
+    justify-self: end;
+    color: var(--fog);
+  }
+
+  .role {
+    grid-area: 2 / 1 / 3 / -1;
+    color: var(--fog);
+  }
+
+  .statement {
+    grid-area: 3 / 1 / 4 / -1;
+    max-width: 24ch;
+    margin-top: clamp(3rem, 12svh, 6rem);
+    font-size: 1.375rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-wrap: pretty;
+  }
+
+  .work {
+    grid-area: 5 / 1 / 6 / -1;
+    margin-block: 2.5rem 2rem;
+    list-style: none;
+    font-size: min(12vw, 4.5rem);
+    line-height: 0.98;
+  }
+
+  .work li {
+    padding-top: 0.08em;
+    overflow: clip;
+  }
+
+  .row {
+    animation: rise 900ms var(--ease-out) calc(100ms + var(--i) * 70ms) both;
+  }
+
+  .project {
+    display: inline-block;
+    margin-left: -0.068em;
+    font-weight: 300;
+    letter-spacing: -0.045em;
+  }
+
+  .work:has(.project:is(:hover, :focus-visible))
+    li:not(:has(.project:is(:hover, :focus-visible))) {
+    color: var(--faint);
+  }
+
+  .project:is(:hover, :focus-visible) {
+    font-weight: 420;
+  }
+
+  .email {
+    grid-area: 6 / 1 / 7 / 4;
+    justify-self: start;
+  }
+
+  .year {
+    grid-area: 6 / 4 / 7 / 5;
+    justify-self: end;
+    color: var(--fog);
+  }
+
+  .grid-hint {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .page {
+      grid-template-rows: auto 1fr auto auto;
+    }
+
+    .name {
+      grid-area: 1 / 1 / 2 / 4;
+    }
+
+    .role {
+      grid-area: 1 / 4 / 2 / 7;
+    }
+
+    .time {
+      grid-area: 1 / 10 / 2 / 13;
+    }
+
+    .statement {
+      grid-area: 2 / 4 / 3 / 9;
+      max-width: 30ch;
+      margin-top: clamp(2.5rem, 13svh, 10rem);
+      font-size: clamp(1.25rem, 1.6vw, 1.75rem);
+    }
+
+    .work {
+      grid-area: 3 / 1 / 4 / -1;
+      margin-block: clamp(1.5rem, 5svh, 3rem) 0;
+      font-size: min(9.4vw, 15svh);
+    }
+
+    .email,
+    .year {
+      margin-top: clamp(2rem, 7svh, 4.5rem);
+    }
+
+    .email {
+      grid-area: 4 / 1 / 5 / 4;
+    }
+
+    .year {
+      grid-area: 4 / 10 / 5 / 13;
+    }
+  }
+
+  @media (min-width: 48rem) and (hover: hover) and (pointer: fine) {
+    .grid-hint {
+      grid-area: 4 / 4 / 5 / 7;
+      justify-self: start;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.5em;
+      margin-top: clamp(2rem, 7svh, 4.5rem);
+      color: var(--fog);
+    }
+
+    .grid-hint:is(:hover, :focus-visible) {
+      color: var(--ink);
+    }
+  }
+
+  kbd {
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0 0.3em;
+    border: 1px solid currentColor;
+    font: inherit;
+    font-size: 0.85em;
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .grid-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: none;
+    pointer-events: none;
+  }
+
+  .grid-overlay span {
+    background: color-mix(in srgb, var(--ink) 5%, transparent);
+    border-inline: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  }
+
+  .grid-overlay span:nth-child(n + 5) {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .grid-overlay span:nth-child(n + 5) {
+      display: block;
+    }
+  }
+
+  :global([data-grid]) .grid-overlay {
+    display: grid;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .work li {
+      transition: color 250ms var(--ease-out);
+    }
+
+    .project {
+      transition: font-weight 400ms var(--ease-out);
+    }
+  }
+
+  @keyframes rise {
+    from {
+      transform: translateY(100%);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .row {
+      animation: fade 300ms var(--ease-out) both;
+    }
+
+    .name,
+    .role,
+    .time,
+    .statement,
+    .email,
+    .grid-hint,
+    .year {
+      animation-duration: 300ms;
+      animation-delay: 0ms;
+    }
+
+    .project {
+      transition: none;
+    }
+
+    .project:is(:hover, :focus-visible) {
+      font-weight: 300;
+    }
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+
+  const clock = document.querySelector<HTMLTimeElement>("time[data-time-zone]");
+  if (clock) {
+    const format = new Intl.DateTimeFormat("en-GB", {
+      timeZone: clock.dataset.timeZone,
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    const tick = () => {
+      const now = new Date();
+      clock.textContent = format.format(now);
+      clock.dateTime = now.toISOString();
+    };
+    tick();
+    setInterval(tick, 15_000);
+  }
+
+  const year = document.querySelector("[data-year]");
+  if (year) year.textContent = String(new Date().getFullYear());
+
+  const toggleGrid = () => root.toggleAttribute("data-grid");
+  document.querySelector("[data-grid-toggle]")?.addEventListener("click", toggleGrid);
+  addEventListener("keydown", (event) => {
+    if (event.key.toLowerCase() !== "g" || event.metaKey || event.ctrlKey || event.altKey) return;
+    if (event.target instanceof Element && event.target.closest("input, textarea, select")) return;
+    toggleGrid();
+  });
+
+  const title = document.title;
+  let titleTimer: ReturnType<typeof setTimeout>;
+  document.addEventListener("visibilitychange", () => {
+    clearTimeout(titleTimer);
+    if (document.hidden) {
+      document.title = "Come back soon";
+    } else {
+      document.title = "Welcome back";
+      titleTimer = setTimeout(() => (document.title = title), 1600);
+    }
+  });
+
+  const font = getComputedStyle(document.body).fontFamily;
+  console.log(
+    "%cZohaib Akber",
+    `font: 300 48px/1 ${font}; letter-spacing: -0.04em; color: #f2f2f0; background: #1e1f21; padding: 20px 28px 16px;`,
+  );
+</script>

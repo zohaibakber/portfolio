@@ -1,32 +1,27 @@
+export const siteUrl = "https://zohaibakber.com";
+
 export const portfolio = {
   name: "Zohaib Akber",
-  title: "Full-Stack Developer",
+  title: "Full-stack developer",
   location: "Lahore, Pakistan",
+  timeZone: "Asia/Karachi",
   email: "mail@zohaibakber.com",
-  website: "zohaibakber.com",
-  intro: "Full-stack developer in Lahore, Pakistan.",
   statement:
     "I turn designs into fast, precise websites, from the first Figma frame to a live storefront.",
+  description:
+    "Full-stack developer in Lahore, Pakistan, building fast, precise websites and storefronts for brands.",
   projects: [
     {
-      name: "Kråkvik & D'Orazio",
+      name: "Kråkvik & D’Orazio",
       url: "https://krakvikdorazio.com",
-      image: "/work/krakvik.webp",
-      note: "Built with SPEC47",
     },
     {
       name: "Lafine",
       url: "https://lafine-lab.com",
-      image: "/work/lafine.webp",
-      note: "Built with SPEC47",
     },
     {
       name: "Silvens",
       url: "https://silvens.store",
-      image: "/work/silvens.webp",
-      note: "Next.js and Shopify",
     },
   ],
 } as const;
-
-export type Project = (typeof portfolio.projects)[number];
