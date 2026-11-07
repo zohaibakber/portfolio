@@ -8,7 +8,15 @@ const year = new Date().getFullYear();
 
 <Base>
   <main class="page grid">
-    <h1 class="name">{name}</h1>
+    <h1 class="name">
+      <svg class="clover" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="6.5" r="5.5" style="--leaf:0"></circle>
+        <circle cx="17.5" cy="12" r="5.5" style="--leaf:1"></circle>
+        <circle cx="12" cy="17.5" r="5.5" style="--leaf:2"></circle>
+        <circle cx="6.5" cy="12" r="5.5" style="--leaf:3"></circle>
+      </svg>
+      <span class="name-text">{name}</span>
+    </h1>
     <p class="time">Lahore <time data-time-zone={timeZone}>--:--</time></p>
 
     <p class="statement">{statement}</p>
@@ -44,7 +52,7 @@ const year = new Date().getFullYear();
     align-items: start;
   }
 
-  .name,
+  .name-text,
   .time,
   .statement,
   .email,
@@ -55,8 +63,25 @@ const year = new Date().getFullYear();
 
   .name {
     grid-area: 1 / 1 / 2 / 3;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
     font-size: inherit;
     font-weight: 400;
+  }
+
+  .clover {
+    width: 0.9em;
+    height: 0.9em;
+    flex: none;
+    fill: currentColor;
+    animation: turn 1100ms var(--ease-reveal) 200ms backwards;
+  }
+
+  .clover circle {
+    transform-box: view-box;
+    transform-origin: 12px 12px;
+    animation: unfold 700ms var(--ease-reveal) calc(200ms + var(--leaf) * 80ms) backwards;
   }
 
   .time {
@@ -226,6 +251,18 @@ const year = new Date().getFullYear();
     }
   }
 
+  @keyframes turn {
+    from {
+      transform: rotate(-90deg);
+    }
+  }
+
+  @keyframes unfold {
+    from {
+      transform: scale(0);
+    }
+  }
+
   @keyframes fade {
     from {
       opacity: 0;
@@ -237,7 +274,15 @@ const year = new Date().getFullYear();
       animation: fade 300ms var(--ease-fade) backwards;
     }
 
-    .name,
+    .clover {
+      animation: fade 300ms var(--ease-fade) backwards;
+    }
+
+    .clover circle {
+      animation: none;
+    }
+
+    .name-text,
     .time,
     .statement,
     .email,

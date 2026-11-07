@@ -17,6 +17,12 @@ CONF
 cat > "$work/og.svg" <<'SVG'
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#f2f2f0"/>
+  <g transform="translate(45 45) scale(3)" fill="#1e1f21">
+    <circle cx="12" cy="6.5" r="5.5"/>
+    <circle cx="17.5" cy="12" r="5.5"/>
+    <circle cx="12" cy="17.5" r="5.5"/>
+    <circle cx="6.5" cy="12" r="5.5"/>
+  </g>
   <g font-family="Inter Tight" fill="#1e1f21">
     <text x="36" y="535" font-size="200" font-weight="300" letter-spacing="-9">Zohaib Akber</text>
     <text x="48" y="590" font-size="22" font-weight="400" fill="#6c6f73">zohaibakber.com</text>
